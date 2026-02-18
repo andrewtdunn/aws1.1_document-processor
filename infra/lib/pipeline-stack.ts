@@ -25,7 +25,7 @@ export class PipelineStack extends cdk.Stack {
         input: CodePipelineSource.connection(repoName, branch, {
           connectionArn,
         }),
-        commands: ["npm ci", "npm run build", "npx cdk synth"],
+        commands: ["cd infra", "npm ci", "npm run build", "npx cdk synth"],
         primaryOutputDirectory: "infra/cdk.out",
       }),
     });
