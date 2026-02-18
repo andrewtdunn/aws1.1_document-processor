@@ -1,0 +1,11 @@
+import { Bucket } from "aws-cdk-lib/aws-s3";
+import * as cdk from "aws-cdk-lib/core";
+import { Construct } from "constructs";
+
+export class InfraStack extends cdk.Stack {
+  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+    super(scope, id, props);
+
+    const s3 = new Bucket(this, "atd2005-Bedrock1.1-Bucket");
+  }
+}
