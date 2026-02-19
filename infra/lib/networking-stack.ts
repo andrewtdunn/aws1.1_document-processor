@@ -8,7 +8,7 @@ export class NetworkingStack extends Stack {
   constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props);
 
-    this.vpc = new Vpc(this, "Claims-Processor-VPC ", {
+    this.vpc = new Vpc(this, "Claims-Processor-VPC", {
       maxAzs: 3, // default is all AZs in region
       natGateways: 1, // default is one NAT gateway per AZ
     });
