@@ -6,7 +6,7 @@ import { NetworkStack } from "./network-stack";
 export class InfraStage extends Stage {
   constructor(scope: Construct, id: string, props?: StageProps) {
     super(scope, id, props);
-  }
 
-  network = new NetworkStack(this, "network-stack");
+    const networkStack = new NetworkStack(this, "network-stack");
+  }
 }
