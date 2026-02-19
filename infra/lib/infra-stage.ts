@@ -8,5 +8,6 @@ export class InfraStage extends Stage {
     super(scope, id, props);
 
     const infraStack = new InfraStack(this, "InfraStack");
+    const networkStack = new NetworkingStack(this, "NetworkingStack");
   }
 }
