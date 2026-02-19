@@ -19,7 +19,7 @@ export class PipelineStack extends cdk.Stack {
     super(scope, id, props);
 
     const pipeline = new CodePipeline(this, "Pipeline", {
-      pipelineName: "document-processor-pipeline",
+      pipelineName: "claims-processor-pipeline",
       crossAccountKeys: true,
       synth: new ShellStep("Synth", {
         input: CodePipelineSource.connection(repoName, branch, {
