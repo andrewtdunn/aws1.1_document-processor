@@ -1,3 +1,4 @@
+import * as cdk from "aws-cdk-lib/core";
 import { Stack, StackProps } from "aws-cdk-lib";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { Construct } from "constructs";
