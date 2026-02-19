@@ -9,6 +9,6 @@ export class InfraStage extends Stage {
 
     const infraStack = new InfraStack(this, "InfraStack");
 
-    const networkStack = new NetworkStack(this, "NetworkStack");
+    //const networkStack = new NetworkStack(this, "NetworkStack");
   }
 }
