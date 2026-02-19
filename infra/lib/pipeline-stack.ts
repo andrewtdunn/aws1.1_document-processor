@@ -29,23 +29,6 @@ export class PipelineStack extends cdk.Stack {
         commands: ["cd infra", "npm ci", "npm run build", "npx cdk synth"],
         primaryOutputDirectory: "infra/cdk.out",
       }),
-      selfMutationCodeBuildDefaults: {
-        rolePolicy: [
-          new PolicyStatement({
-            effect: Effect.ALLOW,
-            actions: ["sts:AssumeRole"],
-            resources: ["*"],
-            conditions: {
-              StringEquals: {
-                "iam:ResourceTag/aws-cdk:bootstrap-role": [
-                  "deploy",
-                  "file-publishing",
-                ],
-              },
-            },
-          }),
-        ],
-      },
     });
 
     const prod = pipeline.addStage(
