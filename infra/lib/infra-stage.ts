@@ -1,4 +1,4 @@
-import { NetworkStack } from "./network-stack";
+import { NetworkStack } from "./networking-stack";
 import { InfraStack } from "./infra-stack";
 import { Stage, StageProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
