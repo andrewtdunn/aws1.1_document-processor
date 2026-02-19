@@ -20,7 +20,7 @@ export class ComputeStack extends Stack {
 
     const app = new ApplicationLoadBalancedFargateService(
       this,
-      "fargate-serveice",
+      "fargate-service",
       {
         cluster,
         cpu: 256,
