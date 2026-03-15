@@ -11,7 +11,7 @@ interface ComputeStackProps extends StackProps {
 }
 
 const sslCertArn =
-  "arn:aws:acm:us-east-1:654654396735:certificate/9f54f8a4-0c90-4ce2-96a0-ea2055c5bccb";
+  "arn:aws:acm:us-east-1:654654396735:certificate/bdb364ed-0350-4b44-b599-0fd86274f978";
 
 export class ComputeStack extends Stack {
   constructor(scope: Construct, id: string, props?: ComputeStackProps) {
