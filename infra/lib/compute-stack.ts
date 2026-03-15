@@ -1,4 +1,5 @@
 import { Stack, StackProps } from "aws-cdk-lib";
+import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { Cluster, ContainerImage } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
@@ -8,6 +9,9 @@ import * as path from "path";
 interface ComputeStackProps extends StackProps {
   vpc: Vpc;
 }
+
+const sslCertArn =
+  "arn:aws:acm:us-east-1:654654396735:certificate/9f54f8a4-0c90-4ce2-96a0-ea2055c5bccb";
 
 export class ComputeStack extends Stack {
   constructor(scope: Construct, id: string, props?: ComputeStackProps) {
@@ -25,6 +29,11 @@ export class ComputeStack extends Stack {
       {
         cluster,
         cpu: 256,
+        certificate: Certificate.fromCertificateArn(
+          this,
+          "sslCert",
+          sslCertArn,
+        ),
         memoryLimitMiB: 512,
         desiredCount: 1,
         taskImageOptions: {
