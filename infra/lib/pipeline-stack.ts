@@ -12,7 +12,7 @@ const repoName = "andrewtdunn/aws1.1_document-processor";
 const branch = "main";
 const connectionArn =
   "arn:aws:codeconnections:us-east-1:637423577773:connection/5aaaaa13-84f7-403e-b14f-a3b92040799e";
-const prodAccount: string = "219765858109";
+const prodAccount: string = "654654396735";
 const deployRegion = "us-east-1";
 
 export class PipelineStack extends cdk.Stack {
