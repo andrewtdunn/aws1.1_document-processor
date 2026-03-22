@@ -7,3 +7,8 @@ infra/node_modules
 infra/.cdk.staging
 infra/cdk.out
 
+code/.env
+
+code/.venv/
+code/*.pyc
+code/__pycache__/

@@ -7,8 +7,8 @@ WORKDIR /app
 
 COPY ./requirements.txt /app/requirements.txt
 
-COPY server.py /app
+COPY . /app
 
 RUN python -m pip install -r requirements.txt
 
-CMD ["python", "server.py"]
+CMD ["python", "docunosis.py"]
