@@ -18,6 +18,10 @@ TABLE_NAME = "BlogPosts"
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table(TABLE_NAME)
 
+@app.route("/healthy", methods=["GET"])
+def healthy():
+    return jsonify({"status": "OK"}), 200
+
 @app.route('/')
 def index():
   # Get all blog posts from DynamoDB
@@ -81,4 +85,4 @@ def create():
     return render_template('create.html')
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=False)
