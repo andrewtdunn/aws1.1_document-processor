@@ -1,4 +1,4 @@
-import { Stack, StackProps } from "aws-cdk-lib";
+import { Duration, Stack, StackProps } from "aws-cdk-lib";
 import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { Cluster, ContainerImage } from "aws-cdk-lib/aws-ecs";
@@ -36,6 +36,15 @@ export class ComputeStack extends Stack {
         ),
         memoryLimitMiB: 512,
         desiredCount: 1,
+        minHealthyPercent: 100,
+        healthCheck: {
+          command: ["CMD-SHELL", "curl -f http://localhost/ || exit 1"],
+          // the properties below are optional
+          interval: Duration.seconds(30),
+          retries: 3,
+          startPeriod: Duration.minutes(2),
+          timeout: Duration.seconds(30),
+        },
         taskImageOptions: {
           image: ContainerImage.fromAsset(
             path.resolve(__dirname, "..", "..", "src", "docunosis"),
