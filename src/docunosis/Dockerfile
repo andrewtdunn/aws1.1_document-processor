@@ -1,7 +1,7 @@
 FROM public.ecr.aws/docker/library/python:3.11-slim
 # Alternative: FROM --platform=linux/amd64 public.ecr.aws/docker/library/python:3.10-slim
 
-EXPOSE 80
+EXPOSE 5000
 
 WORKDIR /app
 
@@ -11,4 +11,5 @@ COPY . /app
 
 RUN python -m pip install -r requirements.txt
 
-CMD ["python", "app.py"]
+ENV FLASK_APP=app.py
+CMD ["flask", "run", "--host=0.0.0.0", "--port=5000"]
