@@ -11,4 +11,4 @@ COPY . /app
 
 RUN python -m pip install -r requirements.txt
 
-CMD ["python", "app.py"]
+CMD ["python", "docunosis.py"]
