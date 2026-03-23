@@ -35,6 +35,7 @@ export class ComputeStack extends Stack {
           sslCertArn,
         ),
         memoryLimitMiB: 512,
+        listenerPort: 5000,
         desiredCount: 1,
         minHealthyPercent: 100,
         taskImageOptions: {
