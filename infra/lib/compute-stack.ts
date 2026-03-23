@@ -38,7 +38,7 @@ export class ComputeStack extends Stack {
         desiredCount: 1,
         taskImageOptions: {
           image: ContainerImage.fromAsset(
-            path.resolve(__dirname, "..", "..", "code", "docunosis"),
+            path.resolve(__dirname, "..", "..", "src", "docunosis"),
           ),
         },
       },

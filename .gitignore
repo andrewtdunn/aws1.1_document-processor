@@ -7,8 +7,9 @@ infra/node_modules
 infra/.cdk.staging
 infra/cdk.out
 
-code/.env
+**/.env
 
-code/.venv/
-code/*.pyc
-code/__pycache__/
+src/venv/
+src/docunosis/*.pyc
+src/docunosis/__pycache__/
+src/docunosis/__pycache__/**.pyc
