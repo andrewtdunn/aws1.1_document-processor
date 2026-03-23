@@ -7,6 +7,7 @@ charset-normalizer==3.4.6
 click==8.3.1
 Flask==3.1.2
 Flask-captcha2==3.1.0
+flask-dynamo==0.1.2
 flask-simple-captcha==5.5.5
 idna==3.11
 itsdangerous==2.2.0
