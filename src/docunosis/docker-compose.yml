@@ -7,8 +7,8 @@ services:
   python-container:
     image: docunosis-docker2
     environment:
-      - AWS_ACCESS_KEY_ID=AKIAZQ3DRLE7XUJPSR6M
-      - AWS_SECRET_ACCESS_KEY=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
+      - AWS_ACCESS_KEY_ID=
+      - AWS_SECRET_ACCESS_KEY=
       - AWS_DEFAULT_REGION=us-east-1
       - RECAPTCHA_SITE_KEY=
     ports:
