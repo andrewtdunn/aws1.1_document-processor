@@ -1,14 +1,15 @@
 FROM public.ecr.aws/docker/library/python:3.11-slim
-# Alternative: FROM --platform=linux/amd64 public.ecr.aws/docker/library/python:3.10-slim
+# FROM --platform=linux/amd64 public.ecr.aws/docker/library/python:3.10-slim
 
-EXPOSE 5000
-
-WORKDIR /app
 
 COPY ./requirements.txt /app/requirements.txt
 
+WORKDIR /app
+
+RUN pip install -r requirements.txt
+
 COPY . /app
 
-RUN python -m pip install -r requirements.txt
+ENTRYPOINT ["python"]
 
-CMD ["python", "app.py"]
+CMD ["app.py"]

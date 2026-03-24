@@ -3,6 +3,7 @@ import { Certificate } from "aws-cdk-lib/aws-certificatemanager";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { Cluster, ContainerImage } from "aws-cdk-lib/aws-ecs";
 import { ApplicationLoadBalancedFargateService } from "aws-cdk-lib/aws-ecs-patterns";
+import { Effect, PolicyStatement, Role } from "aws-cdk-lib/aws-iam";
 import { Construct } from "constructs";
 import * as path from "path";
 
@@ -23,7 +24,8 @@ export class ComputeStack extends Stack {
       vpc,
     });
 
-    const app = new ApplicationLoadBalancedFargateService(
+
+    const service = new ApplicationLoadBalancedFargateService(
       this,
       "fargate-service",
       {
@@ -35,18 +37,31 @@ export class ComputeStack extends Stack {
           sslCertArn,
         ),
         memoryLimitMiB: 512,
-        listenerPort: 5000,
         desiredCount: 1,
         minHealthyPercent: 100,
         taskImageOptions: {
           image: ContainerImage.fromAsset(
             path.resolve(__dirname, "..", "..", "src", "docunosis"),
           ),
+          containerPort: 5000,
+          taskRole: 
         },
       },
     );
 
-    app.targetGroup.configureHealthCheck({
+    service.taskDefinition.taskRole.addToPrincipalPolicy(new PolicyStatement({
+      actions: ['s3:*'],
+      resources: ['*'],
+      effect: Effect.ALLOW,
+    }));
+
+    service.taskDefinition.taskRole.addToPrincipalPolicy(new PolicyStatement({
+      actions: ["dynamodb:*"],
+      resources: ['*'],
+      effect: Effect.ALLOW,
+    }));
+
+    service.targetGroup.configureHealthCheck({
       path: "/healthy",
     });
   }
