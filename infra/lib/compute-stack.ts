@@ -24,7 +24,6 @@ export class ComputeStack extends Stack {
       vpc,
     });
 
-
     const service = new ApplicationLoadBalancedFargateService(
       this,
       "fargate-service",
@@ -44,22 +43,25 @@ export class ComputeStack extends Stack {
             path.resolve(__dirname, "..", "..", "src", "docunosis"),
           ),
           containerPort: 5000,
-          taskRole: 
         },
       },
     );
 
-    service.taskDefinition.taskRole.addToPrincipalPolicy(new PolicyStatement({
-      actions: ['s3:*'],
-      resources: ['*'],
-      effect: Effect.ALLOW,
-    }));
+    service.taskDefinition.taskRole.addToPrincipalPolicy(
+      new PolicyStatement({
+        actions: ["s3:*"],
+        resources: ["*"],
+        effect: Effect.ALLOW,
+      }),
+    );
 
-    service.taskDefinition.taskRole.addToPrincipalPolicy(new PolicyStatement({
-      actions: ["dynamodb:*"],
-      resources: ['*'],
-      effect: Effect.ALLOW,
-    }));
+    service.taskDefinition.taskRole.addToPrincipalPolicy(
+      new PolicyStatement({
+        actions: [":*"],
+        resources: ["*"],
+        effect: Effect.ALLOW,
+      }),
+    );
 
     service.targetGroup.configureHealthCheck({
       path: "/healthy",
