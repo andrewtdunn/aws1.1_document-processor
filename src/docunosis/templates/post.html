@@ -12,6 +12,14 @@
   <body>
     <div class="container">
       <h1 class="mt-5">{{ post.title }}</h1>
+      {% if post.post_image %}
+      <img
+        class="img-thumbnail"
+        src="{{post.post_image}}"
+        alt="{{ post.title }}"
+        style="max-width: 300px"
+      />
+      {% endif %}
       <p>{{ post.content }}</p>
       <a href="/" class="btn btn-secondary">Back to Home</a>
     </div>
