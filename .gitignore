@@ -14,4 +14,4 @@ src/docunosis/docker-compose.yml
 src/docunosis/*.pyc
 src/docunosis/__pycache__/
 src/docunosis/__pycache__/**.pyc
-src/docunosis/docker*
+src/docunosis/docker-compose.yml
