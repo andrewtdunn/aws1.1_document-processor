@@ -57,7 +57,7 @@ export class ComputeStack extends Stack {
 
     service.taskDefinition.taskRole.addToPrincipalPolicy(
       new PolicyStatement({
-        actions: [":*"],
+        actions: ["dynamodb:*"],
         resources: ["*"],
         effect: Effect.ALLOW,
       }),
