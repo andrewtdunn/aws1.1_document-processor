@@ -4,6 +4,8 @@ FROM public.ecr.aws/docker/library/python:3.11-slim
 
 COPY ./requirements.txt /app/requirements.txt
 
+COPY ./package.json /app/package.json
+
 WORKDIR /app
 
 RUN pip install -r requirements.txt
