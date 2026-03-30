@@ -124,7 +124,6 @@ def signup():
 def index():
   # Get all blog posts from DynamoDB
   response = table.scan()
-  print(response)
   blog_posts = response['Items']
   # Sort blog posts by date (newest first)
   blog_posts.sort(key=lambda x: x['date'], reverse=True)
