@@ -21,19 +21,18 @@ class DocunosisUser(UserMixin):
     def get(user_id):
         """Retrieves a user from DynamoDB by user ID."""
         response = table.query(
-            KeyConditionExpression=Key('id').eq(user_id)
+            KeyConditionExpression=Key('username').eq(user_id)
         )
         if response['Count'] == 0:
             return None
         
         # Extract user data from the response
         user_data = response['Items'][0]
-        user = User(
-            id=user_data['id'],
+        return DocunosisUser(
+            username=user_data['username'],
             email=user_data['email'],
             password=user_data['password'] # Note: Passwords should be hashed in a real app
         )
-        return user
     
     @staticmethod
     def create(username, email, password):
@@ -46,4 +45,13 @@ class DocunosisUser(UserMixin):
             }
         )
         return DocunosisUser(username, email, password)
+
+    @staticmethod
+    def login_user(user_id, pw):
+      test_user = DocunosisUser.get(user_id)
+      is_valid = bcrypt.check_password_hash(hashed_password, pw)
+      if test_user and is_valid:
+        return test_user
+      else: 
+        return None
 
