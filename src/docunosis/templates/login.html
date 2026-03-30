@@ -1,25 +1,25 @@
 {% extends "base.html" %} {% block content %}
 <h1 class="mt-5">Log In</h1>
-<form method="POST" action="/login">
+{% if login_error %}
+<div>{{ login_error }}</div>
+{% endif %}
+<form method="POST" action="/login" novalidate>
+  {{ form.csrf_token }}
   <div class="form-group">
-    <label for="username">Username</label>
-    <input
-      type="text"
-      class="form-control"
-      id="username"
-      name="username"
-      required
-    />
+    {% if form.errors.username %} {{ form.username.label }} {{
+    form.username(size=20, class_="form-control is-invalid")}} {% for error in
+    form.errors.username %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% else %} {{ form.username.label }} {{ form.username(size=20,
+    class_="form-control")}} {% endif %}
   </div>
   <div class="form-group">
-    <label for="password">Password</label>
-    <input
-      type="password"
-      class="form-control"
-      id="password"
-      name="password"
-      required
-    />
+    {% if form.errors.password %} {{ form.password.label }} {{
+    form.password(size=20, class_="form-control is-invalid")}} {% for error in
+    form.errors.password %}
+    <div class="invalid-feedback">{{ error }}</div>
+    {% endfor %} {% else %} {{ form.password.label }} {{ form.password(size=20,
+    class_="form-control")}} {% endif %}
   </div>
   <div class="form-group">
     <input type="submit" name="submit" value="Log In" class="btn btn-primary" />

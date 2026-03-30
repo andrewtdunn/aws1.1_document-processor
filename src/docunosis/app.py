@@ -49,8 +49,7 @@ class UserForm(FlaskForm):
 class LoginForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=4, max=25)])
     password = PasswordField('Password', [
-        validators.DataRequired(),
-        validators.EqualTo('confirm', message='Passwords must match')
+        validators.DataRequired()
     ])
 
 
@@ -83,12 +82,17 @@ def login():
     if form.validate_on_submit():
         # Login and validate the user.
         # user should be an instance of your `User` class
-        login_user(user)
-
-        flash('Logged in successfully.')
-    
-        return redirect(url_for('index'))
-    return render_template('login.html')
+        user = DocunosisUser.get(form.username.data)
+        if user is None:
+            return render_template('login.html', form=form, login_error="user not found")
+        is_valid = bcrypt.check_password_hash(user.password, form.password.data)
+        if user and is_valid: 
+            login_user(user)
+            flash('Logged in successfully.')
+            return redirect(url_for('index'))
+        else: 
+           render_template('login.html', form=form, login_error="wrong password")     
+    return render_template('login.html', form=form)
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -125,7 +129,7 @@ def index():
   # Sort blog posts by date (newest first)
   blog_posts.sort(key=lambda x: x['date'], reverse=True)
   
-  return render_template('index.html', posts=blog_posts)
+  return render_template('index.html', posts=blog_posts, username=current_user.username)
 
 @app.route('/post/<id>')
 @login_required
@@ -182,7 +186,7 @@ def create():
 @login_required
 def logout():
     logout_user()
-    return redirect(somewhere)
+    return redirect(url_for('login'))
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", debug=False)
