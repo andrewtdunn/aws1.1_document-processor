@@ -8,6 +8,8 @@ WORKDIR /app
 
 RUN pip install -r requirements.txt
 
+RUN npm install
+
 COPY . /app
 
 ENTRYPOINT ["python"]
