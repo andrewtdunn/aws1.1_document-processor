@@ -1,3 +1,4 @@
+bcrypt==5.0.0
 blinker==1.7.0
 boto3==1.33.6
 botocore==1.33.6
@@ -6,6 +7,7 @@ certifi==2026.2.25
 charset-normalizer==3.4.6
 click==8.1.7
 Flask==3.0.0
+Flask-Bcrypt==1.0.1
 Flask-captcha2==3.1.0
 Flask-Login==0.6.3
 Flask-WTF==1.2.2
