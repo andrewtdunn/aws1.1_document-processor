@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, url_for, jsonify, session
+from flask import Flask, render_template, request, redirect, url_for, jsonify, session, flash
 from flask_login import LoginManager, login_required, current_user, login_user, logout_user
 import boto3
 from boto3.dynamodb.conditions import Key
@@ -7,17 +7,21 @@ import datetime
 import os
 import secrets
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField
-from wtforms import StringField
+from wtforms import StringField, PasswordField, SubmitField,validators
 from wtforms.validators import DataRequired
+from flask_bcrypt import Bcrypt
 
 from dotenv import load_dotenv
 from werkzeug.utils import secure_filename
 from flask_login import LoginManager
+
+from user import DocunosisUser
 load_dotenv() # This loads the variables from .env
 
 
 app = Flask(__name__)
+bcrypt = Bcrypt(app)
+
 
 
 app.secret_key = secrets.token_hex()
@@ -26,19 +30,37 @@ login_manager.init_app(app)
 
 BUCKET_NAME = "datajammers-blog-images"
 TABLE_NAME = "BlogPosts"
+USERS_TABLE_NAME = "DocunosisUsers"
 
 # AWS DynamoDB Setup
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table(TABLE_NAME)
+users_table = dynamodb.Table(USERS_TABLE_NAME)
+
+class UserForm(FlaskForm):
+    username = StringField('Username', [validators.Length(min=4, max=25)])
+    email = StringField('Email', [validators.Length(min=6, max=35)])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+    confirm = PasswordField('Confirm')
 
 class LoginForm(FlaskForm):
-    username = StringField('Username')
-    password = PasswordField('Password')
-    submit = SubmitField('Submit')
+    username = StringField('Username', [validators.Length(min=4, max=25)])
+    password = PasswordField('Password', [
+        validators.DataRequired(),
+        validators.EqualTo('confirm', message='Passwords must match')
+    ])
+
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.get(user_id)
+    response = users_table.query(KeyConditionExpression=Key('username').eq(user_id))
+    if response['Count'] == 0:
+        return None
+    user_data = response['Items'][0]
+    return DocunosisUser(user_data['username'], user_data['email'], user_data['password'])
 
 @app.route("/healthy", methods=["GET"])
 def healthy():
@@ -49,6 +71,8 @@ def unauthorized():
     if request.blueprint == 'api':
         abort(HTTPStatus.UNAUTHORIZED)
     return redirect(url_for('login'))
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -61,40 +85,34 @@ def login():
         # user should be an instance of your `User` class
         login_user(user)
 
-        flask.flash('Logged in successfully.')
-
-        next = flask.request.args.get('next')
-        # url_has_allowed_host_and_scheme should check if the url is safe
-        # for redirects, meaning it matches the request host.
-        # See Django's url_has_allowed_host_and_scheme for an example.
-        if not url_has_allowed_host_and_scheme(next, request.host):
-            return flask.abort(400)
-
-        return flask.redirect(next or flask.url_for('index'))
+        flash('Logged in successfully.')
+    
+        return redirect(url_for('index'))
     return render_template('login.html')
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
+    print("signup")
     # Here we use a class of some kind to represent and validate our
     # client-side form data. For example, WTForms is a library that will
     # handle this for us, and we use a custom LoginForm to validate.
-    form = LoginForm()
+    form = UserForm()
     if form.validate_on_submit():
+        print("validated")
+
         # Login and validate the user.
         # user should be an instance of your `User` class
-        login_user(user)
+        hashed_password = bcrypt.generate_password_hash(form.password.data).decode('utf-8')
+        user = DocunosisUser.create(form.username.data,form.email.data, hashed_password)
+        login_user(user, form.username.data)
+        
+        flash('Signed Up successfully.')
 
-        flask.flash('Signed Up successfully.')
-
-        next = flask.request.args.get('next')
-        # url_has_allowed_host_and_scheme should check if the url is safe
-        # for redirects, meaning it matches the request host.
-        # See Django's url_has_allowed_host_and_scheme for an example.
-        if not url_has_allowed_host_and_scheme(next, request.host):
-            return flask.abort(400)
-
-        return flask.redirect(next or flask.url_for('index'))
-    return render_template('signup.html')
+        return redirect(url_for('index'))
+    else: 
+      print("not validated")
+      print(form.errors)
+    return render_template('signup.html', form=form)
 
 
 @app.route('/')
