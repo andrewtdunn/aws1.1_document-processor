@@ -28,9 +28,10 @@ app.secret_key = secrets.token_hex()
 login_manager = LoginManager()
 login_manager.init_app(app)
 
-BUCKET_NAME = "datajammers-blog-images"
-TABLE_NAME = "BlogPosts"
-USERS_TABLE_NAME = "DocunosisUsers"
+BUCKET_NAME = os.environ['BUCKET_NAME']
+TABLE_NAME = os.environ['DOCUMENTS_TABLE_NAME']
+USERS_TABLE_NAME = os.environ['USERS_TABLE_NAME']
+
 
 # AWS DynamoDB Setup
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
@@ -142,7 +143,7 @@ def post(id):
 @login_required
 def create():
     if request.method == 'POST':
-      post_id = str(uuid.uuid4())  
+      doc_idz = str(uuid.uuid4())  
       title = request.form['title']
       content = request.form['content']
       author = request.form.get('author', 'Anonymous')
@@ -165,7 +166,7 @@ def create():
       # Add post to DynamoDB
       table.put_item(
           Item={
-              'post_id': post_id,
+              'doc_id': doc_id,
               'title': title,
               'content': content,
               'author': author,
