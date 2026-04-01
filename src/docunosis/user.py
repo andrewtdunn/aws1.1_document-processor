@@ -1,6 +1,7 @@
 from flask_login import UserMixin
 import boto3
 from boto3.dynamodb.conditions import Key
+import os
 
 # Initialize DynamoDB resource and table
 # Ensure you have AWS credentials configured in your environment or code
