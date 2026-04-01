@@ -5,7 +5,8 @@ from boto3.dynamodb.conditions import Key
 # Initialize DynamoDB resource and table
 # Ensure you have AWS credentials configured in your environment or code
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1') 
-table = dynamodb.Table('DocunosisUsers') 
+USERS_TABLE_NAME = os.environ['USERS_TABLE_NAME']
+table = dynamodb.Table(USERS_TABLE_NAME) 
 
 class DocunosisUser(UserMixin):
     def __init__(self, username, email, password):
@@ -18,10 +19,10 @@ class DocunosisUser(UserMixin):
         return str(self.username) # Ensure the ID is returned as a string (unicode in Python 2)
 
     @staticmethod
-    def get(user_id):
+    def get(username):
         """Retrieves a user from DynamoDB by user ID."""
         response = table.query(
-            KeyConditionExpression=Key('username').eq(user_id)
+            KeyConditionExpression=Key('username').eq(username)
         )
         if response['Count'] == 0:
             return None
@@ -47,8 +48,8 @@ class DocunosisUser(UserMixin):
         return DocunosisUser(username, email, password)
 
     @staticmethod
-    def login_user(user_id, pw):
-      test_user = DocunosisUser.get(user_id)
+    def login_user(username, pw):
+      test_user = DocunosisUser.get(username)
       is_valid = bcrypt.check_password_hash(hashed_password, pw)
       if test_user and is_valid:
         return test_user
