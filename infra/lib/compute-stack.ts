@@ -73,6 +73,8 @@ export class ComputeStack extends Stack {
       }),
     );
 
+    props.s3.grantReadWrite(service.taskDefinition.taskRole);
+
     service.targetGroup.configureHealthCheck({
       path: "/healthy",
     });
