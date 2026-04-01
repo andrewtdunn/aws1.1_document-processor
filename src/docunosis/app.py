@@ -143,7 +143,7 @@ def post(id):
 @login_required
 def create():
     if request.method == 'POST':
-      doc_idz = str(uuid.uuid4())  
+      doc_id = str(uuid.uuid4())  
       title = request.form['title']
       content = request.form['content']
       author = request.form.get('author', 'Anonymous')
