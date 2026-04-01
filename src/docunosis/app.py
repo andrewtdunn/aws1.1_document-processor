@@ -135,7 +135,7 @@ def index():
 @login_required
 def post(id):
   response = table.query(
-      KeyConditionExpression=Key('post_id').eq(id)
+      KeyConditionExpression=Key('doc_id').eq(id)
   )
   return render_template('post.html', post=response['Items'][0])
 
