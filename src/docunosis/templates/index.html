@@ -14,7 +14,7 @@
   <div class="card-body">
     <h5 class="card-title">{{ post.title }}</h5>
     <p class="card-text">{{ post.content | truncate(150) }}</p>
-    <a href="/post/{{ post.post_id }}" class="btn btn-secondary">Read More</a>
+    <a href="/post/{{ post.doc_id }}" class="btn btn-secondary">Read More</a>
   </div>
 </div>
 {% endfor %} {% endblock %}
