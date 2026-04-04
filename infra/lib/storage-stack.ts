@@ -15,7 +15,7 @@ export class StorageStack extends cdk.Stack {
     super(scope, id, props);
 
     this.s3 = new Bucket(this, "atd2005-genai-1.1-bucket", {
-      bucketName: "docunosis-bucket",
+      bucketName: "claim-documents-poc-atd",
       blockPublicAccess: new BlockPublicAccess({
         blockPublicAcls: false,
         blockPublicPolicy: false,
