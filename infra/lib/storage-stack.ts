@@ -16,7 +16,12 @@ export class StorageStack extends cdk.Stack {
 
     this.s3 = new Bucket(this, "atd2005-genai-1.1-bucket", {
       bucketName: "docunosis-bucket",
-      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
+      blockPublicAccess: new BlockPublicAccess({
+        blockPublicAcls: false,
+        blockPublicPolicy: false,
+        ignorePublicAcls: false,
+        restrictPublicBuckets: false,
+      }),
       publicReadAccess: true,
       enforceSSL: true,
     });
