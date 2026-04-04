@@ -16,6 +16,8 @@ export class StorageStack extends cdk.Stack {
 
     this.s3 = new Bucket(this, "atd2005-genai-1.1-bucket", {
       bucketName: "docunosis-bucket",
+      publicReadAccess: true,
+      enforceSSL: true,
     });
 
     this.usersTable = new Table(this, "users-ddb-table", {
