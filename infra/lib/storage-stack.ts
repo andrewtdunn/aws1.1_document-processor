@@ -1,7 +1,7 @@
 import { aws_dynamodb } from "aws-cdk-lib";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { Vpc } from "aws-cdk-lib/aws-ec2";
-import { Bucket } from "aws-cdk-lib/aws-s3";
+import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
 import * as cdk from "aws-cdk-lib/core";
 import { Construct } from "constructs";
 
@@ -16,6 +16,7 @@ export class StorageStack extends cdk.Stack {
 
     this.s3 = new Bucket(this, "atd2005-genai-1.1-bucket", {
       bucketName: "docunosis-bucket",
+      blockPublicAccess: BlockPublicAccess.BLOCK_ALL,
       publicReadAccess: true,
       enforceSSL: true,
     });
