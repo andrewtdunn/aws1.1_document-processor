@@ -16,14 +16,6 @@ export class StorageStack extends cdk.Stack {
 
     this.s3 = new Bucket(this, "atd2005-genai-1.1-bucket", {
       bucketName: "claim-documents-poc-atd",
-      blockPublicAccess: new BlockPublicAccess({
-        blockPublicAcls: false,
-        blockPublicPolicy: false,
-        ignorePublicAcls: false,
-        restrictPublicBuckets: false,
-      }),
-      publicReadAccess: true,
-      enforceSSL: true,
     });
 
     this.usersTable = new Table(this, "users-ddb-table", {
