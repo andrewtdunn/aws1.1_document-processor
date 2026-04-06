@@ -3,7 +3,6 @@ import { StorageStack } from "./storage-stack";
 import { Stage, StageProps } from "aws-cdk-lib";
 import { Construct } from "constructs";
 import { ComputeStack } from "./compute-stack";
-import { LambdaStack } from "./lambda-stack";
 
 export class InfraStage extends Stage {
   constructor(scope: Construct, id: string, props?: StageProps) {
@@ -16,10 +15,6 @@ export class InfraStage extends Stage {
       s3: storageStack.s3,
       usersTable: storageStack.usersTable,
       documentsTable: storageStack.documentsTable,
-    });
-    const lambdaStack = new LambdaStack(this, "LambdaStack", {
-      docs_bucket: storageStack.s3,
-      docs_table: storageStack.documentsTable,
     });
   }
 }
