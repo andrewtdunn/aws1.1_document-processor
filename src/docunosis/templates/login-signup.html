@@ -1,11 +1,14 @@
 {% extends "base.html" %} {% block content %}
 <div id="cardholder" class="d-flex w-100 h-full justify-content-center">
-  <div class="card mt-5" style="width: 400px">
+  <div class="card mt-5 bg-light" style="width: 400px">
     <div
       id="logo-holder"
-      class="card-img-top d-flex justify-content-center align-content-center p-4"
+      class="border-0 card-img-top d-flex justify-content-center align-content-center p-4"
     >
-      <img class="img-thumbnail m-10" src="/static/docunosis_logo.png" />
+      <img
+        class="img-thumbnail m-10 border-0 bg-light"
+        src="/static/docunosis_logo.png"
+      />
     </div>
     <div id="formcontent" class="card-body">
       {% block formcontent %}{% endblock %}
