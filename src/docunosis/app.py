@@ -8,7 +8,7 @@ import os
 import secrets
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField,validators
-from wtforms.validators import DataRequired
+from wtforms.validators import DataRequired, Email
 from flask_bcrypt import Bcrypt
 
 from dotenv import load_dotenv
@@ -40,8 +40,11 @@ users_table = dynamodb.Table(USERS_TABLE_NAME)
 bucket = boto3.resource('s3')
 
 class UserForm(FlaskForm):
-    username = StringField('Username', [validators.Length(min=4, max=25)])
-    email = StringField('Email', [validators.Length(min=6, max=35)])
+    username = StringField('Username', [validators.Length(min=4, max=25), 
+        validators.Regexp(r'^[a-zA-Z0-9]*$', 
+                          message="Only letters and numbers allowed")
+    ])
+    email = StringField('Email', [validators.Length(min=6, max=35), DataRequired(), Email()])
     password = PasswordField('Password', [
         validators.DataRequired(),
         validators.EqualTo('confirm', message='Passwords must match')
