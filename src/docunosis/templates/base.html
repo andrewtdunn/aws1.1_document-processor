@@ -26,14 +26,7 @@
   </head>
   <body>
     <div class="container">
-      {% with messages = get_flashed_messages(with_categories=true) %} {% if
-      messages %}
-      <ul class="flashes">
-        {% for category, message in messages %}
-        <li class="{{ category }}">{{ message }}</li>
-        {% endfor %}
-      </ul>
-      {% endif %} {% endwith %} {% if username %}
+      {% if username %}
       <nav class="navbar navbar-light bg-light">
         <div class="d-flex flex-col align-items-center">
           <svg
@@ -61,7 +54,14 @@
           Logout
         </a>
       </nav>
-      {% endif %} {% block content %}{% endblock %}
+      {% endif %} {% with messages = get_flashed_messages(with_categories=true)
+      %} {% if messages %}
+      <ul class="flashes">
+        {% for category, message in messages %}
+        <li class="alert alert-{{ category }}">{{ message }}</li>
+        {% endfor %}
+      </ul>
+      {% endif %} {% endwith %} {% block content %}{% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.0.5/dist/umd/popper.min.js"></script>

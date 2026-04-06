@@ -90,7 +90,7 @@ def login():
         is_valid = bcrypt.check_password_hash(user.password, form.password.data)
         if user and is_valid: 
             login_user(user)
-            flash('Logged in successfully.')
+            flash('Logged in successfully.', 'success')
             return redirect(url_for('index'))
         else: 
            render_template('login.html', form=form, login_error="wrong password")     
@@ -112,7 +112,7 @@ def signup():
         user = DocunosisUser.create(form.username.data,form.email.data, hashed_password)
         login_user(user, form.username.data)
         
-        flash('Signed Up successfully.')
+        flash('Signed Up successfully.', 'success')
 
         return redirect(url_for('index'))
     else: 
