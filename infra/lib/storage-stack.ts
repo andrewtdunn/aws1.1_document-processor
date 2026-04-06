@@ -1,16 +1,19 @@
 import { aws_dynamodb } from "aws-cdk-lib";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
-import { Vpc } from "aws-cdk-lib/aws-ec2";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
-import { BlockPublicAccess, Bucket } from "aws-cdk-lib/aws-s3";
+import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
+import { S3EventSource } from "aws-cdk-lib/aws-lambda-event-sources";
+import { BlockPublicAccess, Bucket, EventType } from "aws-cdk-lib/aws-s3";
 import * as cdk from "aws-cdk-lib/core";
 import { Construct } from "constructs";
+import path from "path";
 
 export class StorageStack extends cdk.Stack {
   // public readonly vpc: Vpc;
   public s3: Bucket;
   public usersTable: Table;
   public documentsTable: Table;
+  public eventSource: S3EventSource;
 
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
@@ -53,5 +56,21 @@ export class StorageStack extends cdk.Stack {
         type: aws_dynamodb.AttributeType.STRING,
       },
     });
+
+    const extractHandler = new Function(this, "ExtractHandler", {
+      runtime: Runtime.PYTHON_3_9,
+      handler: "extract.lambda_handler",
+      code: Code.fromAsset(path.join(__dirname, "./lambda_code/extract")),
+      environment: {
+        BUCKET_NAME: this.s3.bucketName,
+      },
+    });
+
+    const eventSource = new S3EventSource(this.s3, {
+      events: [EventType.OBJECT_CREATED],
+      filters: [{ suffix: ".pdf" }],
+    });
+
+    extractHandler.addEventSource(eventSource);
   }
 }
