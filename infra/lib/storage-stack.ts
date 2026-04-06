@@ -59,7 +59,7 @@ export class StorageStack extends cdk.Stack {
 
     const extractHandler = new Function(this, "ExtractHandler", {
       runtime: Runtime.PYTHON_3_9,
-      handler: "extract.lambda_handler",
+      handler: "extract.handler",
       code: Code.fromAsset(path.join(__dirname, "./lambda_code/extract")),
       environment: {
         BUCKET_NAME: this.s3.bucketName,
