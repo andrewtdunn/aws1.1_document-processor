@@ -1,5 +1,4 @@
 {% extends "login-signup.html" %} {% block formcontent %}
-<h1 class="mt-1">Sign Up Form</h1>
 <form method="POST" action="/signup" novalidate>
   {{ form.csrf_token }}
   <div class="form-group">

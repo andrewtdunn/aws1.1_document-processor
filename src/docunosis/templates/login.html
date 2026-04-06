@@ -1,7 +1,5 @@
-{% extends "login-signup.html" %} {% block formcontent %}
-<h1 class="mt-1">Log In</h1>
-{% if login_error %}
-<div>{{ login_error }}</div>
+{% extends "login-signup.html" %} {% block formcontent %} {% if login_error %}
+<div class="alert alert-danger" role="alert">{{ login_error }}</div>
 {% endif %}
 <form method="POST" action="/login" novalidate>
   {{ form.csrf_token }}
