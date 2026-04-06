@@ -37,6 +37,7 @@ USERS_TABLE_NAME = os.environ['USERS_TABLE_NAME']
 dynamodb = boto3.resource('dynamodb', region_name='us-east-1')
 table = dynamodb.Table(TABLE_NAME)
 users_table = dynamodb.Table(USERS_TABLE_NAME)
+bucket = boto3.resource('s3')
 
 class UserForm(FlaskForm):
     username = StringField('Username', [validators.Length(min=4, max=25)])
@@ -154,8 +155,7 @@ def create():
       filename = secure_filename(file.filename)
 
       if (filename):
-        s3 = boto3.client('s3',aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-          aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"))
+        s3 = boto3.client('s3')
         try: 
           s3.upload_fileobj(file, BUCKET_NAME, filename, ExtraArgs={"ContentType": file.content_type})
         except Exception as e:
