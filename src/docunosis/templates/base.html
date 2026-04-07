@@ -56,11 +56,11 @@
       </nav>
       {% endif %} {% with messages = get_flashed_messages(with_categories=true)
       %} {% if messages %}
-      <ul class="flashes">
+      <div class="flashes">
         {% for category, message in messages %}
-        <li class="alert alert-{{ category }}">{{ message }}</li>
+        <div class="mt-5 alert-{{ category }}">{{ message }}</div>
         {% endfor %}
-      </ul>
+      </div>
       {% endif %} {% endwith %} {% block content %}{% endblock %}
     </div>
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
