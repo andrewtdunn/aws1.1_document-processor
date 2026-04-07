@@ -58,7 +58,7 @@
       %} {% if messages %}
       <div class="flashes">
         {% for category, message in messages %}
-        <div class="mt-5 alert-{{ category }}">{{ message }}</div>
+        <div class="alert mt-2 alert-{{ category }}">{{ message }}</div>
         {% endfor %}
       </div>
       {% endif %} {% endwith %} {% block content %}{% endblock %}
