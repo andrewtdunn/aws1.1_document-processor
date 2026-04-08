@@ -2,8 +2,11 @@ import { aws_dynamodb } from "aws-cdk-lib";
 import { Table } from "aws-cdk-lib/aws-dynamodb";
 import { AnyPrincipal, Effect, PolicyStatement } from "aws-cdk-lib/aws-iam";
 import { Code, Function, Runtime } from "aws-cdk-lib/aws-lambda";
+import { LambdaDestination } from "aws-cdk-lib/aws-s3-notifications";
 import { S3EventSource } from "aws-cdk-lib/aws-lambda-event-sources";
 import { BlockPublicAccess, Bucket, EventType } from "aws-cdk-lib/aws-s3";
+import { StateMachine } from "aws-cdk-lib/aws-stepfunctions";
+import { LambdaInvoke } from "aws-cdk-lib/aws-stepfunctions-tasks";
 import * as cdk from "aws-cdk-lib/core";
 import { Construct } from "constructs";
 import path from "path";
@@ -71,6 +74,15 @@ export class StorageStack extends cdk.Stack {
       filters: [{ suffix: ".pdf" }],
     });
 
-    extractHandler.addEventSource(eventSource);
+    const stateMachine = new StateMachine(this, "DocunosisMachine", {
+      definition: new LambdaInvoke(this, "readLambdaTask", {
+        lambdaFunction: extractHandler,
+      }),
+    });
+
+    this.s3.addEventNotification(
+      EventType.OBJECT_CREATED,
+      new LambdaDestination(extractHandler),
+    );
   }
 }
